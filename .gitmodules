@@ -1,9 +1,9 @@
 [submodule "nano_build_opencv"]
 	path = nano_build_opencv
 	url = https://github.com/Curiosity-AI-team/nano_build_opencv.git
-[submodule "ROS1-installation"]
-	path = ROS1-installation
-	url = https://github.com/TPODAvia/ROS1-installation.git
-[submodule "catkin_ws/src/OrcaRL"]
-	path = catkin_ws/src/OrcaRL
-	url = https://github.com/Curiosity-AI-team/OrcaRL.git
+[submodule "ros2_setup_scripts_ubuntu"]
+	path = ros2_setup_scripts_ubuntu
+	url = https://github.com/Tiryoh/ros2_setup_scripts_ubuntu.git
+[submodule "colcon_ws/src/OrcaRL2"]
+	path = colcon_ws/src/OrcaRL2
+	url = https://github.com/Curiosity-AI-team/OrcaRL2.git

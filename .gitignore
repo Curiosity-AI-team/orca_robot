@@ -1,5 +1,7 @@
 build/
 devel/
+install/
+log/
 __pycache__
 tmp/
 temp/
