@@ -9,21 +9,21 @@ rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 export MAKEFLAGS="-j1"
 
-sudo spt-get install gparted
-sudo apt-get install ros-foxy-gazebo-ros-pkgs ros-foxy-gazebo-ros2-control
-sudo apt-get install ros-foxy-turtle-tf2-py ros-foxy-tf2-tools ros-foxy-tf-transformations
-sudo apt-get install ros-foxy-vision*
-sudo apt install ros-foxy-navigation2
-sudo apt install ros-foxy-octomap-*
-sudo apt install ros-foxy-ros-testing
-sudo apt install ros-foxy-nav2-bringup
-sudo apt install ros-foxy-realsense2-camera
-sudo apt install ros-foxy-nav2-bringup
-sudo apt install ros-foxy-imu-filter-madgwick
-sudo apt install ros-foxy-libpointmatcher
-sudo apt install ros-foxy-ament-python
-sudo apt install ros-foxy-libpointmatcher
-sudo apt install ros-foxy-gtsam
+sudo apt-get install gparted -y
+sudo apt-get install ros-foxy-gazebo-ros-pkgs ros-foxy-gazebo-ros2-control -y
+sudo apt-get install ros-foxy-turtle-tf2-py ros-foxy-tf2-tools ros-foxy-tf-transformations -y
+sudo apt-get install ros-foxy-vision* -y
+sudo apt install ros-foxy-navigation2 ros-foxy-octomap-* ros-foxy-ros-testing ros-foxy-nav2-bringup ros-foxy-realsense2-camera ros-foxy-imu-filter-madgwick ros-foxy-libpointmatcher ros-foxy-ament-python ros-foxy-gtsam  -y
+sudo apt install ros-foxy-octomap-* -y
+sudo apt install ros-foxy-ros-testing -y
+sudo apt install ros-foxy-nav2-bringup -y
+sudo apt install ros-foxy-realsense2-camera -y
+sudo apt install ros-foxy-nav2-bringup -y
+sudo apt install ros-foxy-imu-filter-madgwick -y
+sudo apt install ros-foxy-libpointmatcher -y
+sudo apt install ros-foxy-ament-python -y
+sudo apt install ros-foxy-libpointmatcher -y
+sudo apt install ros-foxy-gtsam -y
 
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 source install/setup.bash 
