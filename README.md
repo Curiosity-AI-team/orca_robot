@@ -28,3 +28,18 @@ killall -9 gzclient
 
 
 ros2 pkg create --build-type ament_cmake --node-name orca_rmf orca_rmf --dependencies std_msgs
+
+
+ros2 run rmf_building_map_tools model_downloader rmf_demos_maps -s office
+
+
+git clone https://github.com/osrf/gazebo_models
+
+# Navigate to the cloned repository
+cd gazebo_models
+
+# Copy all models to the ~/.gazebo/models/ directory
+mkdir -p ~/.gazebo/models
+cp -r ./* ~/.gazebo/models/.
+
+export GAZEBO_MODEL_PATH=~/.gazebo/models:$GAZEBO_MODEL_PATH
