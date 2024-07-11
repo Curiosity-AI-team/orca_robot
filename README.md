@@ -25,3 +25,6 @@ Set your email address: git config --global user.email "MY_NAME@example.com"
 
 killall -9 gzserver
 killall -9 gzclient
+
+
+ros2 pkg create --build-type ament_cmake --node-name orca_rmf orca_rmf --dependencies std_msgs

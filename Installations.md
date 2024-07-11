@@ -26,4 +26,10 @@ f
 ros2 launch orca_navigation turtlebot3_world.launch.py
 ros2 launch orca_navigation cartographer.launch.py use_sim_time:=True
 ros2 launch orca_navigation navigation2.launch.py use_sim_time:=True
+
+ros2 launch orca_control launch_sim.launch.py
+
+ros2 launch orca_rtabmap orca_rtabmap_slam.launch.py
+
+ros2 launch orca_navigation navigation2.launch.py use_sim_time:=True
 ```
