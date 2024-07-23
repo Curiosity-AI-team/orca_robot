@@ -12,8 +12,8 @@ sudo apt-get install ros-foxy-ament-cmake
 
 colcon build --packages-select orca_navigation
 
-git submodule add https://github.com/introlab/rtabmap.git localization/rtabmap
-git submodule add https://github.com/introlab/rtabmap_ros localization/rtabmap_ros
+git submodule add https://github.com/pal-robotics/aruco_ros.git navigation/aruco_ros
+git submodule add https://github.com/open-rmf/rmf_demos.git simulation/rmf_demos
 
 git submodule add https://github.com/ros-drivers/velodyne colcon_ws/src/OrcaRL2/localization/velodyne
 

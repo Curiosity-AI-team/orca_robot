@@ -11,13 +11,12 @@ export MAKEFLAGS="-j1"
 
 sudo apt-get install gparted ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros2-control ros-humble-turtle-tf2-py ros-humble-tf2-tools ros-humble-tf-transformations  ros-humble-navigation2 ros-humble-ros-testing ros-humble-nav2-bringup ros-humble-realsense2-camera ros-humble-imu-filter-madgwick ros-humble-libpointmatcher ros-humble-gtsam ros-humble-ros-testing ros-humble-nav2-bringup ros-humble-realsense2-camera  ros-humble-nav2-bringup ros-humble-imu-filter-madgwick ros-humble-libpointmatcher ros-humble-libpointmatcher ros-humble-gtsam ros-humble-rmw-cyclonedds-cpp ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros2-control -y
 
-sudo apt install python3-pip
+sudo apt install python3-pip xterm
 pip install flask
-pip install socketio
+# pip install socketio # this will produce error!
 pip install flask_cors
 pip install flask_socketio
 pip install fastapi
-pip install symbol
 
 sudo apt-get install ros-humble-vision* -y
 sudo apt-get install ros-humble-octomap-* -y
