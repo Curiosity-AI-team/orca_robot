@@ -17,10 +17,15 @@ sudo apt-get install ros-humble-vision* -y
 sudo apt-get install ros-humble-octomap-* -y
 sudo apt-get install ros-humble-turtlebot3* -y
 sudo apt-get install -y ros-humble-rmf*
+sudo apt-get install -y ros-humble-tf2*
 ```
 
 Install orca project
 ```bash
+cd ~/orca_robot/colcon_ws/src/OrcaRL2
+git submodule update --init --recursive
+
+cd ~/orca_robot/colcon_ws
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 export MAKEFLAGS="-j2"
