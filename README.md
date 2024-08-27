@@ -30,6 +30,9 @@ rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 export MAKEFLAGS="-j2"
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+git clone --recursive https://github.com/mrceki/free_fleet.git
+ros2 run nav2_map_server map_saver_cli -f my_map
 ```
 
 ### CUDA installation (optional)
