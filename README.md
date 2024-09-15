@@ -24,6 +24,7 @@ Install orca project
 ```bash
 cd ~/orca_robot/colcon_ws/src/OrcaRL2
 git submodule update --init --recursive
+git submodule update --init --recursive --force
 
 cd ~/orca_robot/colcon_ws
 rosdep update
