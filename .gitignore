@@ -1,6 +1,7 @@
 build/
 devel/
 install/
+rosbag/
 log/
 __pycache__
 tmp/
