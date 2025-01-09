@@ -19,7 +19,7 @@ sudo apt-get install ros-humble-turtlebot3* -y
 sudo apt-get install -y ros-humble-rmf*
 sudo apt-get install -y ros-humble-tf2*
 ```
-
+ros2 launch rmf_demos_gz_classic office.launch.xml
 Install orca project
 ```bash
 cd ~/orca_robot/colcon_ws/src/OrcaRL2
