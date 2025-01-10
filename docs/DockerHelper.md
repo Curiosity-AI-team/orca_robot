@@ -1,10 +1,5 @@
-Installing Docker on Ubuntu 20.04 involves a series of steps that will get you up and running with Docker, a powerful platform for developing, shipping, and running applications inside containers. This guide will walk you through the installation process using the Docker repository to ensure you get the latest version and maintain ease of updates.
+Installing Docker on Ubuntu involves a series of steps that will get you up and running with Docker, a powerful platform for developing, shipping, and running applications inside containers. This guide will walk you through the installation process using the Docker repository to ensure you get the latest version and maintain ease of updates.
 
-### Prerequisites
-
-Before you begin, you should have:
-- A system running Ubuntu 20.04.
-- A user account with sudo privileges.
 
 ### Step 1: Update Your System
 
@@ -12,7 +7,6 @@ First, update your package index and upgrade the system to ensure all existing p
 
 ```bash
 sudo apt update
-sudo apt upgrade -y
 ```
 
 ### Step 2: Install Required Packages
@@ -118,9 +112,3 @@ docker images
 ```
 
 This command will list all the remaining Docker images. The image with ID `a0eec34f4b62` should no longer appear in the list.
-
-### Caution
-
-Using the `--force` option can lead to data loss if the image is still in use by existing containers or if you might need the image later. Always make sure that the image is not in use and that you do not need it before forcibly removing it.
-
-Citations:

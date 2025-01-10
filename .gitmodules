@@ -7,3 +7,9 @@
 [submodule "colcon_ws/src/OrcaRL2"]
 	path = colcon_ws/src/OrcaRL2
 	url = https://github.com/Curiosity-AI-team/OrcaRL2.git
+[submodule "OrcaVA"]
+	path = OrcaVA
+	url = https://github.com/Curiosity-AI-team/OrcaVA
+[submodule "OrcaHACS"]
+	path = OrcaHACS
+	url = https://github.com/Curiosity-AI-team/OrcaHACS
