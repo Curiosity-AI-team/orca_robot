@@ -1,130 +1,176 @@
 # 🤖 Orca Robot Project
 
-Welcome to the **Orca Robot Project** 🤗! This repository brings together a complete and versatile robotics platform, featuring multiple sub-packages designed to handle robotic reinforcement learning, multimodal interaction, and smart home integration. Below is a detailed guide to help you get started with each component of the project.
+Welcome to the **Orca Robot Project**! This repository brings together a complete and versatile robotics platform featuring multiple sub-packages designed to handle robotic reinforcement learning, multimodal interaction, and smart home integration. Below is a top-level guide to get you started, along with links to additional documentation.
 
 ![OrcaRL Interface](docs/images/maxresdefault.jpg)
 
+---
+
 ## 📁 Folder Structure
+
+A typical folder structure might look like this:
 
 ```plaintext
 orca_robot/
 ├── colcon_ws/
 │   └── src/
-│       └── OrcaRL2/             # OrcaRL package for ROS2
-├── OrcaVA/                      # Multimodal assistant package
-├── OrcaHACS/                    # Integrations for Home Assistant package
-├── docs/                        # Documentation and images
-├── nano_build_opencv/           # Package for building OpenCV with CUDA
-└── ros2_setup_scripts_ubuntu/   # Set of scripts to install ROS
+│       └── OrcaRL2/                # OrcaRL package for ROS2
+├── OrcaVA/                         # Multimodal assistant package
+├── OrcaHACS/                       # Integrations for Home Assistant
+├── docs/                           # Documentation and images
+├── nano_build_opencv/              # Scripts for building OpenCV with CUDA
+└── ros2_setup_scripts_ubuntu/      # Scripts to install ROS
 ```
 
-## 📚 Installation Guide
+---
 
-### 🛠️ Prerequisites
+## 🧩 Additional Setup Guides
 
-Before you begin, ensure you have the following installed on your system:
+Depending on your needs, consult the following files in the `docs/` folder (or at the root of the repository) for more targeted instructions:
 
-- **ROS2 Humble** or later
-- **Docker** (for containerized components)
-- **Python 3.10+**
-- **Home Assistant** (for HACS integration)
+1. **[HardwareHelper.md](HardwareHelper.md)**  
+   Detailed instructions on configuring hardware (Jetson, CAN, I2C, SSH, ODrive, etc.).
 
-### 📝 Setting Up the Workspace
+2. **[INSTALL_DESKTOP.md](INSTALL_DESKTOP.md)**  
+   Steps for setting up a desktop-based ROS environment, including required dependencies, building from source, and more.
 
-1. 🛠️ Prepare the host machine:
-```bash
-   echo '
-   prevent_colcon_build() {
-      forbidden_dir="$HOME/Orca_Robot"
-      allowed_dir="$HOME/Orca_Robot/colcon_ws"
+3. **[INSTALL_ROBOT.md](INSTALL_ROBOT.md)**  
+   Installation process for a **headless** robot system running Ubuntu 22.04 or a Jetson device.
 
-      # Check if the current directory is exactly the forbidden directory
-      if [[ "$PWD" == "$forbidden_dir" ]]; then
-         echo "**************************************************************"
-         echo "ERROR: You are attempting to build in a forbidden directory!"
-         echo "Please build only inside $allowed_dir"
-         echo "**************************************************************"
+4. **[MANUAL.md](MANUAL.md)**  
+   How to run simulations, set up SLAM, launch navigation, manage tasks, and more.
 
-         echo "Deleting build/, install/, and log/ directories..."
-         rm -rf "$forbidden_dir/build" "$forbidden_dir/install" "$forbidden_dir/log"
+5. **[DockerHelper.md](DockerHelper.md)**  
+   A guide to installing and managing Docker on Ubuntu for containerized development.
 
-         return 1  # Prevent colcon from continuing
-      fi
-   }
+6. **[GITHelper.md](GITHelper.md)**  
+   Essential Git commands, handling submodules, and repository organization.
 
-   # Hook into colcon build
-   alias colcon="prevent_colcon_build && colcon"
-   ' >> ~/.bashrc
+---
 
-   exec bash
-   ```
-2. 📂 Clone the repository:
-```bash
+## 📚 Installation and Workspace Setup
 
-   git config --global user.name "FIRST_NAME LAST_NAME"
-   git config --global user.email "MY_NAME@example.com"
+Below is a brief overview of how to set up the **Orca Robot Project**. **Please note** that each subsystem (like `OrcaVA`, `OrcaHACS`, or `OrcaRL2`) may have additional dependencies described in their respective README files.
 
-   git clone https://github.com/Curiosity-AI-team/Orca_Robot --recursive
+1. **Clone the Repository (with Submodules):**
+
+   Refer to **[GITHelper.md](GITHelper.md)** for detailed commands on initializing and updating submodules. 
+   ```bash
+   git clone https://github.com/Curiosity-AI-team/Orca_Robot.git --recursive
    cd Orca_Robot
    ```
 
-### 🚀 Running OrcaRL
+2. **Configure ROS & Install Dependencies:**
 
-OrcaRL provides tools and environments for integrating ROS on robots.
+   - For a desktop environment, follow **[INSTALL_DESKTOP.md](INSTALL_DESKTOP.md)**.
+   - For a robot (headless) environment, follow **[INSTALL_ROBOT.md](INSTALL_ROBOT.md)**.
 
-1. 🔄 Navigate to the OrcaRL package:
-```bash
-   cd colcon_ws/src/OrcaRL2
+3. **Build the ROS Packages:**
+
+   ```bash
+   cd colcon_ws
+   colcon build --symlink-install
    ```
-2. Install ROS using bash script:
-```bash
-   ./orca_robot/ros2_setup_scripts_ubuntu/ros2-humble-desktop-main.sh
+   *(Make sure to follow the environment setup steps from the relevant install guide.)*
+
+---
+
+## 🚀 Running OrcaRL
+
+OrcaRL provides tools and environments for integrating ROS on robots using reinforcement learning. Once your workspace is built:
+
+1. **Navigate to OrcaRL2**:
+
+   ```bash
+   cd ~/orca_robot/colcon_ws/src/OrcaRL2
+   ```
+
+2. **Source the Environment**:
+
+   ```bash
    source /opt/ros/humble/setup.bash
-   echo "source ~/orca_robot/colcon_ws/install/setup.bash" >> ~/.bashrc
-   # pip install -r ~/orca_robot/colcon_ws/src/OrcaRL2/requirements.txt
+   source ~/orca_robot/colcon_ws/install/setup.bash
+   ```
+
+3. **Run Demos / Launch Files** (example):
+
+   ```bash
+   ros2 launch orca_navigation navigation2.launch.py
+   ```
+
+*(For more details on how to run simulations, localize, or navigate, see [MANUAL.md](MANUAL.md).)*
+
+---
+
+## 🗃️ Docker Setup
+
+If you prefer containerized development or plan to run the project in Docker:
+
+- Check **[DockerHelper.md](DockerHelper.md)** for detailed Docker installation and usage commands.
+- Build or pull the Docker images as per your development needs.
+
+Example:
+```bash
+docker build -t your_orca_robot_image .
+docker run -it --rm your_orca_robot_image
 ```
 
-For detailed usage, see the [OrcaRL Documentation](colcon_ws/src/OrcaRL2/README.md).
+---
 
-### 🚀 Running OrcaVA
+## 💪 OrcaHACS (Home Assistant Integrations)
 
-OrcaVA is a multimodal assistant capable of handling voice commands and text inputs.
+1. **Copy** the relevant custom components from `OrcaHACS/` into your Home Assistant `config/custom_components`.
+2. **Restart** Home Assistant.
+3. **Configure** new integrations through the Home Assistant UI.
 
-1. 🔄 Navigate to the OrcaVA directory:
-```bash
-   cd OrcaVA
-   ```
+*(Detailed instructions found in `OrcaHACS/README.md`.)*
 
-Refer to the [OrcaVA User Guide](OrcaVA/README.md) for more information on setup and configuration.
+---
 
-### 💪 Setting Up OrcaHACS
+## 🏭 Hardware Configuration
 
-OrcaHACS contains custom components and integrations for Home Assistant.
+If you’re working with hardware like:
 
-1. 🔒 Copy the contents of the `HACS` folder to your Home Assistant `custom_components` directory.
-2. 🔄 Restart Home Assistant.
-3. 🔍 Add the new integrations via the Home Assistant UI.
+- **NVIDIA Jetson** (Orin, Nano, Xavier, etc.)
+- **Motor drivers (ZLAC8030L, ODrive)**
+- **Sensors (LIDAR, IMU, etc.)**
 
-For details on available integrations, see the [OrcaHACS Documentation](OrcaHACS/README.md).
+Refer to **[HardwareHelper.md](HardwareHelper.md)** for step-by-step instructions on enabling interfaces, setting up can0, I2C, installing additional drivers, etc.
 
-## 🧶 Hardware
-Although this project theoretically works on various platforms, we provide our humanoid robot with all the necessary packages and tools pre-installed for a starting experience. If you are interested in obtaining our hardware solution, please contact us to place an order.
+---
 
-![OrcaRL Interface](docs/images/AiNex.jpg)
+## 🎯 Subpackage Details
+
+1. **OrcaRL2** (ROS2 & Reinforcement Learning)  
+   Located at `colcon_ws/src/OrcaRL2`. Main functionalities include SLAM, navigation, and RL-based planning.  
+
+2. **OrcaVA** (Multimodal Assistant)  
+   Provides modules for voice and text-based interaction.  
+
+3. **OrcaHACS** (Home Assistant Components)  
+   Smart-home integrations and custom components for controlling devices via Home Assistant.  
+
+---
 
 ## 👨‍💼 Sponsor the Project
-This project is open source, and we welcome contributions from the community. If you would like to support the continued development of this project, you can sponsor us. Your sponsorship will help us improve the project, add new features, and ensure its long-term maintenance.
 
-To learn more about sponsorship opportunities, please reach out to us or visit the project’s sponsorship page.
+This project is open-source, and we appreciate community support. Sponsors help us add new features, improve the codebase, and maintain long-term stability. For more information, please contact us or visit the project’s sponsorship page.
+
+---
 
 ## 🔒 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
+
+---
 
 ## 📧 Contact
 
-If you have any questions or need further assistance, feel free to contact us:
+For questions, issues, or additional support:
 
-- **📧 Email:** vmd000200000088@gmail.com
-- **📘 GitHub Issues:** [Issue Tracker](https://github.com/Curiosity-AI-team/Orca_Robot/issues)
+- **Email:** vmd000200000088@gmail.com  
+- **GitHub Issues:** [Issue Tracker](https://github.com/Curiosity-AI-team/Orca_Robot/issues)
 
+---
+
+**Happy Hacking with Orca Robot Project!**

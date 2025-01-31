@@ -1,0 +1,261 @@
+
+###############################################################################
+# 0) Disallow 'conda init' and restrict 'conda create'
+###############################################################################
+
+# Helper: Expand a path and see if it (or its parent) is the miniconda install
+is_in_miniconda3() {
+    local path="$1"
+    local fullpath
+    local miniconda_path
+
+    # Expand to an absolute path
+    fullpath="$(readlink -f "$path" 2>/dev/null)"
+    if [[ -z "$fullpath" ]]; then
+        # fallback if readlink fails
+        fullpath="$(cd "$(dirname "$path")" && pwd -P)/$(basename "$path")"
+    fi
+
+    # Expand the miniconda installation path too
+    miniconda_path="$(readlink -f "$HOME/miniconda3" 2>/dev/null)"
+    if [[ -z "$miniconda_path" ]]; then
+        miniconda_path="$HOME/miniconda3"
+    fi
+
+    # Check if the fullpath starts with miniconda_path
+    if [[ "$fullpath" == "$miniconda_path"* ]]; then
+        return 0  # yes, it's in ~/miniconda3
+    else
+        return 1
+    fi
+}
+
+conda() {
+    # Block 'conda init'
+    if [[ "$1" == "init" ]]; then
+        echo "ERROR: \`conda init\` is disabled to avoid conflict with ROS2 packages."
+        echo "___________________________________________________________________________________________________"
+        echo "Create a folder first:"
+        echo "                                      mkdir example_folder && cd example_folder."
+        echo "Add this script inside the terminal:"
+        echo "                                      export PATH=~/miniconda3/bin:$""PATH"
+        echo "And create your environment:"
+        echo "                                      conda create --prefix ~/example_folder python=3.9"
+        return 1
+    fi
+
+    # Intercept 'conda create'
+    if [[ "$1" == "create" ]]; then
+        shift  # drop the word "create"
+
+        local used_prefix=0
+        local prefix_value=""
+        local used_name=0
+        local name_value=""
+
+        # Parse arguments to see if we have -p|--prefix or -n|--name
+        while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -p|--prefix)
+            used_prefix=1
+            prefix_value="$2"
+            shift 2
+            ;;
+            -n|--name)
+            used_name=1
+            name_value="$2"
+            shift 2
+            ;;
+            *)
+            shift
+            ;;
+        esac
+        done
+
+        # If user specified --name, block it (Conda will default to putting it under ~/miniconda3/envs).
+        if [[ $used_name -eq 1 ]]; then
+        echo "ERROR: \`conda init\` is disabled to avoid conflict with ROS2 packages."
+        echo "ERROR: You used --name '$name_value'. By default, this places envs in ~/miniconda3/envs."
+        echo "This is disallowed. Use --prefix pointing to a path you control (e.g., ~/test_envs/my_env) instead."
+        echo "___________________________________________________________________________________________________"
+        echo "Create a folder first:"
+        echo "                                      mkdir example_folder && cd example_folder."
+        echo "Add this script inside the terminal:"
+        echo "                                      export PATH=~/miniconda3/bin:$""PATH"
+        echo "And create your environment:"
+        echo "                                      conda create --prefix ~/example_folder python=3.9"
+        return 1
+        fi
+
+        # If user specified --prefix:
+        if [[ $used_prefix -eq 1 ]]; then
+        # Disallow if it's inside ~/miniconda3
+        if is_in_miniconda3 "$prefix_value"; then
+            echo "ERROR: --prefix '$prefix_value' is inside ~/miniconda3."
+            echo "Please use a directory outside ~/miniconda3 to avoid conflicts."
+            return 1
+        fi
+        # Otherwise, allow
+        command conda create --prefix "$prefix_value" "$@"
+        return $?
+        fi
+
+        # If they used neither --name nor --prefix, block it as well
+        echo "ERROR: No --prefix specified. Conda will default to putting envs under ~/miniconda3/envs, which is blocked."
+        echo "Use: conda create --prefix /path/to/env python=3.x"
+        return 1
+    fi
+
+    # For all other conda commands, just allow them
+    command conda "$@"
+}
+
+###############################################################################
+# Optionally, block in-place venv creation in $HOME if you need that too
+###############################################################################
+block_venv_in_home() {
+    # Example logic if you also want to block "python -m venv ~/some_folder"
+    # but allow it if they specify a subdir. Adjust if your policy differs.
+    local venv_path=""
+    for arg in "$@"; do
+        # If the argument does not start with `-`, assume it might be the target folder
+        if [[ "$arg" != -* ]]; then
+        venv_path="$arg"
+        break
+        fi
+    done
+
+    # Skip if no target path found
+    if [[ -z "$venv_path" ]]; then
+        return 0
+    fi
+
+    # Example check: disallow if path is exactly $HOME, or in the miniconda install
+    local expanded
+    expanded="$(readlink -f "$venv_path" 2>/dev/null)"
+    [[ -z "$expanded" ]] && expanded="$(cd "$(dirname "$venv_path")" && pwd -P)/$(basename "$venv_path")"
+
+    if [[ "$expanded" == "$HOME" ]]; then
+        echo "ERROR: Creating a venv directly in HOME is blocked."
+        return 1
+    fi
+
+    if is_in_miniconda3 "$expanded"; then
+        echo "ERROR: Creating a venv inside ~/miniconda3 is blocked."
+        return 1
+    fi
+
+    if [[ "$PWD" == "$HOME" ]]; then
+        echo "ERROR: Creating virtual environments directly in \$HOME is not allowed."
+        echo "Please create (or switch to) a subdirectory inside your home first."
+        return 1  # Return error, blocking the command
+    fi
+
+  # otherwise allowed
+  return 0
+}
+
+###############################################################################
+# Wrapper for mamba
+###############################################################################
+mamba() {
+    # Intercept 'mamba create'
+    if [[ "$1" == "create" ]]; then
+        shift  # Remove the 'create' keyword
+
+        local used_prefix=0
+        local prefix_value=""
+        local used_name=0
+        local name_value=""
+
+        # Parse arguments to identify --prefix or --name
+        while [[ $# -gt 0 ]]; do
+            case "$1" in
+                -p|--prefix)
+                    used_prefix=1
+                    prefix_value="$2"
+                    shift 2
+                    ;;
+                -n|--name)
+                    used_name=1
+                    name_value="$2"
+                    shift 2
+                    ;;
+                *)
+                    shift
+                    ;;
+            esac
+        done
+
+        # Block if --name is used (default location is disallowed)
+        if [[ $used_name -eq 1 ]]; then
+            echo "ERROR: Using '--name $name_value' places the environment in the default mamba directory."
+            echo "This is disallowed. Use '--prefix' with a custom path instead."
+            return 1
+        fi
+
+        # Block if --prefix is inside disallowed paths
+        if [[ $used_prefix -eq 1 ]]; then
+            if ! block_creation_in_home "$prefix_value"; then
+                return 1
+            fi
+            command mamba create --prefix "$prefix_value" "$@"
+            return $?
+        fi
+
+        # Block if neither --name nor --prefix is used
+        echo "ERROR: No --prefix specified. Mamba will default to the default location, which is blocked."
+        echo "Use: mamba create --prefix /path/to/env python=3.x"
+        return 1
+    fi
+
+    # Allow other mamba commands
+    command mamba "$@"
+}
+
+python() {
+    if [[ "$1" == "-m" && "$2" == "venv" ]]; then
+        block_venv_in_home "$@" || return 1
+    fi
+    command python "$@"
+}
+
+python3() {
+    if [[ "$1" == "-m" && "$2" == "venv" ]]; then
+        block_venv_in_home "$@" || return 1
+    fi
+    command python3 "$@"
+}
+
+# Wrapper aliases for specific Python versions
+for version in 3.8 3.9 3.10 3.11 3.12 3.13 3.14 3.15 3.16; do
+    alias "python${version}"="python${version}_wrapper"
+    eval "
+python${version}_wrapper() {
+    if [[ \"\$1\" == \"-m\" && \"\$2\" == \"venv\" ]]; then
+        block_venv_in_home \"\$@\" || return 1
+    fi
+    command python${version} \"\$@\"
+}
+"
+done
+
+###############################################################################
+# If you have other Python versions you want to wrap similarly, do so here
+###############################################################################
+
+###############################################################################
+# ROS environment
+###############################################################################
+source /opt/ros/humble/setup.bash
+source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
+source ~/gr_platform2/colcon_ws/install/setup.bash
+# export PYTHON_EXECUTABLE=/usr/bin/python3
+
+###############################################################################
+# IMPORTANT: We intentionally do NOT add ~/miniconda3/bin to PATH here 
+#            to avoid conflicts with ROS. Export it manually when needed:
+#
+#   export PATH=~/miniconda3/bin:$PATH
+#
+###############################################################################

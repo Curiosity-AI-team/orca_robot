@@ -1,114 +1,175 @@
-Installing Docker on Ubuntu involves a series of steps that will get you up and running with Docker, a powerful platform for developing, shipping, and running applications inside containers. This guide will walk you through the installation process using the Docker repository to ensure you get the latest version and maintain ease of updates.
+# Docker Helper
 
+This document explains how to install and manage Docker on Ubuntu, along with basic usage examples. It also covers forcefully removing images in cases where Docker complains about multiple tags. If you need to integrate Docker containers into your **GR Platform** workflow, or you want to containerize parts of your robotic system, follow the steps below.
 
-### Step 1: Update Your System
+---
 
-First, update your package index and upgrade the system to ensure all existing packages are up to date:
+## Table of Contents
+
+1. [Introduction](#1-introduction)
+2. [System Update](#2-system-update)
+3. [Install Required Packages](#3-install-required-packages)
+4. [Add Docker GPG Key](#4-add-docker-gpg-key)
+5. [Set Up Docker Repository](#5-set-up-docker-repository)
+6. [Install Docker Engine](#6-install-docker-engine)
+7. [Verify Installation](#7-verify-installation)
+8. [Manage Docker as a Non-root User](#8-manage-docker-as-a-non-root-user)
+9. [Enable Docker at Boot](#9-enable-docker-at-boot)
+10. [Basic Docker Usage](#10-basic-docker-usage)
+11. [Force Remove Images](#11-force-remove-images)
+12. [Next Steps and References](#12-next-steps-and-references)
+
+---
+
+## 1. Introduction
+
+Docker is a powerful platform to **build, ship, and run** applications inside lightweight containers. It can be especially useful for robotics workflows, where you may want to isolate certain dependencies or quickly deploy on multiple machines.
+
+This guide assumes you are using **Ubuntu 22.04** (the same OS recommended in [INSTALL_DESKTOP.md](INSTALL_DESKTOP.md) and [INSTALL_ROBOT.md](INSTALL_ROBOT.md)).
+
+---
+
+## 2. System Update
+
+Always begin by updating your package index:
 
 ```bash
 sudo apt update
 ```
 
-### Step 2: Install Required Packages
+*(You can also run `sudo apt upgrade -y` if you’d like to upgrade existing packages.)*
 
-Install packages necessary for Docker to install and run:
+---
+
+## 3. Install Required Packages
+
+Install packages necessary for Docker:
 
 ```bash
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
 ```
 
-### Step 3: Add Docker’s Official GPG Key
+---
 
-This step ensures the software you're installing is authenticated and secure.
+## 4. Add Docker GPG Key
+
+Download Docker’s official GPG key and store it in your keyring:
 
 ```bash
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 ```
 
-### Step 4: Set Up the Stable Repository
+---
 
-Now, add the Docker repository to your system:
+## 5. Set Up Docker Repository
+
+Next, add the **stable** Docker repository to your system’s sources:
 
 ```bash
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
-### Step 5: Install Docker Engine
-
-Update the apt package index with the Docker packages from the newly added repo:
+Then update your package list again:
 
 ```bash
 sudo apt update
 ```
 
-Install the Docker engine:
+---
+
+## 6. Install Docker Engine
+
+Install Docker’s command-line and daemon packages:
 
 ```bash
 sudo apt install docker-ce docker-ce-cli containerd.io -y
 ```
 
-### Step 6: Verify Docker Installation
+---
 
-Check that Docker is installed correctly by running the Hello World container:
+## 7. Verify Installation
+
+Run the classic `hello-world` test container:
 
 ```bash
 sudo docker run hello-world
 ```
 
-This command downloads a test image and runs it in a container. If the installation is successful, the message will indicate that Docker is installed correctly and working.
+If everything is successful, you’ll see a message confirming Docker is up and running.
 
-### Step 7: Manage Docker as a Non-root User
+---
 
-To run Docker commands without prefixing them with `sudo`, add your user to the Docker group:
+## 8. Manage Docker as a Non-root User
+
+To avoid using `sudo` for every Docker command, add your user to the **docker** group:
 
 ```bash
-sudo usermod -aG docker ${USER}
+sudo usermod -aG docker $USER
 ```
 
-You will need to log out and back in for this to take effect, or you can type the following to apply the group change immediately:
+Either **log out and back in** or run:
 
 ```bash
 newgrp docker
 ```
 
-### Step 8: Configure Docker to Start on Boot
+to apply the new group settings immediately.
 
-Enable Docker to start at boot:
+---
+
+## 9. Enable Docker at Boot
+
+Make Docker start automatically whenever your system boots:
 
 ```bash
 sudo systemctl enable docker
 ```
 
-### Step 9: Using Docker
+---
 
-Now that Docker is installed, you can pull images from Docker Hub and run containers. For example, to run a container using the latest Ubuntu image:
+## 10. Basic Docker Usage
+
+You can now download and run containers from Docker Hub. For example, to run the latest Ubuntu image in interactive mode:
 
 ```bash
 docker run -it ubuntu /bin/bash
 ```
 
-This command pulls the Ubuntu image from Docker Hub and opens a bash shell inside the new container.
+When you exit the container, it will stop by default (unless you specify otherwise).
 
-The error message you're seeing indicates that the Docker image `a0eec34f4b62` is tagged in multiple repositories, and Docker is preventing you from removing it without explicitly forcing the removal. This is a safety feature to prevent accidental deletion of images that might still be needed.
+---
 
-### Step 1: Force Remove the Docker Image
+## 11. Force Remove Images
 
-To forcefully remove the image, ignoring the fact that it's tagged in multiple repositories, you can use the `--force` option with the `docker rmi` command. Here's how you can do it:
+If you encounter an error stating an image is “tagged in multiple repositories,” you must force Docker to remove the image. For example, if the image ID is `a0eec34f4b62`:
 
 ```bash
 docker rmi --force a0eec34f4b62
 ```
 
-This command will remove the image from all repositories where it is tagged.
-
-### Step 2: Verify Removal
-
-After running the force removal command, you should verify that the image has indeed been removed:
+Verify removal:
 
 ```bash
 docker images
 ```
 
-This command will list all the remaining Docker images. The image with ID `a0eec34f4b62` should no longer appear in the list.
+The removed image should no longer be listed.
+
+---
+
+## 12. Next Steps and References
+
+- **Integration with GR Platform**: After installing Docker, you can containerize parts of your setup or run pre-built images for your robot or desktop environment. Refer back to [INSTALL_DESKTOP.md](INSTALL_DESKTOP.md) and [INSTALL_ROBOT.md](INSTALL_ROBOT.md) for standard installation steps if you’re not containerizing everything.
+
+- **Hardware Setup**: If your project requires additional hardware settings (CAN bus, I2C, etc.), see [HardwareHelper.md](HardwareHelper.md).
+
+- **More Docker Docs**: Visit the official [Docker documentation](https://docs.docker.com/) for advanced usage, Docker Compose, and networking details.
+
+---
+
+Go back to the [README](README.md).
