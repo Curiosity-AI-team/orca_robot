@@ -28,22 +28,22 @@ orca_robot/
 
 Depending on your needs, consult the following files in the `docs/` folder (or at the root of the repository) for more targeted instructions:
 
-1. **[HardwareHelper.md](HardwareHelper.md)**  
+1. **[HardwareHelper.md](docs/HardwareHelper.md)**  
    Detailed instructions on configuring hardware (Jetson, CAN, I2C, SSH, ODrive, etc.).
 
-2. **[INSTALL_DESKTOP.md](INSTALL_DESKTOP.md)**  
+2. **[INSTALL_DESKTOP.md](docs/INSTALL_DESKTOP.md)**  
    Steps for setting up a desktop-based ROS environment, including required dependencies, building from source, and more.
 
-3. **[INSTALL_ROBOT.md](INSTALL_ROBOT.md)**  
+3. **[INSTALL_ROBOT.md](docs/INSTALL_ROBOT.md)**  
    Installation process for a **headless** robot system running Ubuntu 22.04 or a Jetson device.
 
-4. **[MANUAL.md](MANUAL.md)**  
+4. **[MANUAL.md](docs/MANUAL.md)**  
    How to run simulations, set up SLAM, launch navigation, manage tasks, and more.
 
-5. **[DockerHelper.md](DockerHelper.md)**  
+5. **[DockerHelper.md](docs/DockerHelper.md)**  
    A guide to installing and managing Docker on Ubuntu for containerized development.
 
-6. **[GITHelper.md](GITHelper.md)**  
+6. **[GITHelper.md](docs/GITHelper.md)**  
    Essential Git commands, handling submodules, and repository organization.
 
 ---
@@ -54,7 +54,7 @@ Below is a brief overview of how to set up the **Orca Robot Project**. **Please 
 
 1. **Clone the Repository (with Submodules):**
 
-   Refer to **[GITHelper.md](GITHelper.md)** for detailed commands on initializing and updating submodules. 
+   Refer to **[GITHelper.md](docs/GITHelper.md)** for detailed commands on initializing and updating submodules. 
    ```bash
    git clone https://github.com/Curiosity-AI-team/Orca_Robot.git --recursive
    cd Orca_Robot
@@ -62,8 +62,8 @@ Below is a brief overview of how to set up the **Orca Robot Project**. **Please 
 
 2. **Configure ROS & Install Dependencies:**
 
-   - For a desktop environment, follow **[INSTALL_DESKTOP.md](INSTALL_DESKTOP.md)**.
-   - For a robot (headless) environment, follow **[INSTALL_ROBOT.md](INSTALL_ROBOT.md)**.
+   - For a desktop environment, follow **[INSTALL_DESKTOP.md](docs/INSTALL_DESKTOP.md)**.
+   - For a robot (headless) environment, follow **[INSTALL_ROBOT.md](docs/INSTALL_ROBOT.md)**.
 
 3. **Build the ROS Packages:**
 
@@ -88,7 +88,7 @@ OrcaRL provides tools and environments for integrating ROS on robots using reinf
 2. **Source the Environment**:
 
    ```bash
-   source /opt/ros/humble/setup.bash
+   source /opt/ros/${ROS_DISTRO}/setup.bash
    source ~/orca_robot/colcon_ws/install/setup.bash
    ```
 
@@ -106,7 +106,7 @@ OrcaRL provides tools and environments for integrating ROS on robots using reinf
 
 If you prefer containerized development or plan to run the project in Docker:
 
-- Check **[DockerHelper.md](DockerHelper.md)** for detailed Docker installation and usage commands.
+- Check **[DockerHelper.md](docs/DockerHelper.md)** for detailed Docker installation and usage commands.
 - Build or pull the Docker images as per your development needs.
 
 Example:
@@ -135,7 +135,7 @@ If you’re working with hardware like:
 - **Motor drivers (ZLAC8030L, ODrive)**
 - **Sensors (LIDAR, IMU, etc.)**
 
-Refer to **[HardwareHelper.md](HardwareHelper.md)** for step-by-step instructions on enabling interfaces, setting up can0, I2C, installing additional drivers, etc.
+Refer to **[HardwareHelper.md](docs/HardwareHelper.md)** for step-by-step instructions on enabling interfaces, setting up can0, I2C, installing additional drivers, etc.
 
 ---
 

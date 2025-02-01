@@ -162,14 +162,4 @@ The removed image should no longer be listed.
 
 ---
 
-## 12. Next Steps and References
-
-- **Integration with GR Platform**: After installing Docker, you can containerize parts of your setup or run pre-built images for your robot or desktop environment. Refer back to [INSTALL_DESKTOP.md](INSTALL_DESKTOP.md) and [INSTALL_ROBOT.md](INSTALL_ROBOT.md) for standard installation steps if you’re not containerizing everything.
-
-- **Hardware Setup**: If your project requires additional hardware settings (CAN bus, I2C, etc.), see [HardwareHelper.md](HardwareHelper.md).
-
-- **More Docker Docs**: Visit the official [Docker documentation](https://docs.docker.com/) for advanced usage, Docker Compose, and networking details.
-
----
-
-Go back to the [README](README.md).
+Go back to the [README](../README.md).

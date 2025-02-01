@@ -25,7 +25,7 @@ This guide helps you configure essential hardware and interfaces for the GR Plat
     - [I2C Debug](#i2c-debug)
 14. [Catkin Make Examples](#14-catkin-make-examples)
 15. [ODrive CAN Command Reference](#15-odrive-can-command-reference)
-16. [Additional Network Debug Commands](#16-additional-network-debug-commands)
+16. [CUDA Installation](#16-CUDA-Installation)
 
 ---
 
@@ -157,7 +157,7 @@ with SMBus(1) as bus:
 
 1. **Copy network configuration**:
    ```bash
-   sudo cp ~/gr_platform/configs_root/etc/systemd/network/80-can.network /etc/systemd/network
+   sudo cp ~/Orca_Robot/configs_root/etc/systemd/network/80-can.network /etc/systemd/network
    ```
 2. **Load CAN modules**:
    ```bash
@@ -182,7 +182,7 @@ with SMBus(1) as bus:
 To install all required Python dependencies for your ROS-based rover:
 
 ```bash
-sudo /usr/bin/python3 -m pip install -r ~/gr_platform/requirements.txt
+sudo /usr/bin/python3 -m pip install -r ~/Orca_Robot/requirements.txt
 ```
 
 ---
@@ -218,7 +218,7 @@ dev0.save_configuration()
 ### 7.1 MAVROS Installation
 
 ```bash
-sudo apt-get install ros-humble-mavros*
+sudo apt-get install ros-${ROS_DISTRO}-mavros*
 wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
 chmod a+x install_geographiclib_datasets.sh
 ./install_geographiclib_datasets.sh
@@ -227,7 +227,7 @@ chmod a+x install_geographiclib_datasets.sh
 For convenience on desktop:
 
 ```bash
-sudo apt-get install ros-humble-rqt ros-humble-rqt-common-plugins ros-humble-rqt-robot-plugins
+sudo apt-get install ros-${ROS_DISTRO}-rqt ros-${ROS_DISTRO}-rqt-common-plugins ros-${ROS_DISTRO}-rqt-robot-plugins
 ```
 
 ### 7.2 Enable Port for Controller
@@ -279,21 +279,21 @@ Automate your ROS launch files using `robot_upstart` or a systemd service.
 
 1. Install:
    ```bash
-   sudo apt-get install ros-humble-robot-upstart
+   sudo apt-get install ros-robot-upstart
    ```
 2. Create a service for manual control:
    ```bash
-   python3 gr_platform/docs/srv_up.py
+   python3 Orca_Robot/docs/srv_up.py
    ```
 3. Edit systemd service file:
    ```bash
-   sudo nano /lib/systemd/system/ros-manual-control.service
+   sudo nano /lib/systemd/system/ros-orca-control.service
    ```
    Update:
 
    ```ini
    [Unit]
-   Description="bringup ros-manual-control"
+   Description="bringup ros-orca-control"
    After=network.target
 
    [Service]
@@ -301,30 +301,30 @@ Automate your ROS launch files using `robot_upstart` or a systemd service.
    Environment="HOME=/home/rover"
    Environment="XDG_RUNTIME_DIR=/home/rover"
    Environment="XAUTHORITY=/home/rover/.Xauthority"
-   ExecStart=/usr/sbin/ros-manual-control-start
+   ExecStart=/usr/sbin/ros-orca-control-start
 
    [Install]
    WantedBy=multi-user.target
    ```
 
-4. Source environment in `/usr/sbin/ros-manual-control-start`:
+4. Source environment in `/usr/sbin/ros-orca-control-start`:
    ```bash
-   source /home/rover/gr_platform/configs_root/scripts/env.sh
+   source /home/rover/Orca_Robot/configs_root/scripts/env.sh
    ```
 5. Enable/Disable/Check the service:
    ```bash
-   sudo systemctl enable ros-manual-control
-   sudo systemctl start ros-manual-control
+   sudo systemctl enable ros-orca-control
+   sudo systemctl start ros-orca-control
 
-   sudo systemctl stop ros-manual-control
-   sudo systemctl disable ros-manual-control
+   sudo systemctl stop ros-orca-control
+   sudo systemctl disable ros-orca-control
 
-   sudo systemctl status ros-manual-control
+   sudo systemctl status ros-orca-control
    ```
 
 6. Uninstall:
    ```bash
-   python3 gr_platform/docs/srv_down.py
+   python3 Orca_Robot/docs/srv_down.py
    ```
 
 ---
@@ -359,7 +359,7 @@ sudo apt install nvidia-jetpack
    ```
 2. Build from the `build_opencv` directory:
    ```bash
-   cd ~/gr_platform/build_opencv
+   cd ~/Orca_Robot/build_opencv
    ./build_opencv.sh 4.5.4
    python3 demo.py -b=5 -t=7
    ```
@@ -453,9 +453,9 @@ command_set = {
 }
 ```
 
+## 16. CUDA Installation
 
-### **1. Verify CUDA Installation**
-Check if CUDA is installed on your system:
+1. Check if CUDA is installed on your system:
 
 ```bash
 nvcc --version
@@ -476,7 +476,7 @@ sudo apt install nvidia-cuda-toolkit
 
 ---
 
-### **2. Set CUDA Environment Variables**
+2. Set CUDA Environment Variables**
 Set `CUDA_TOOLKIT_ROOT_DIR` manually:
 
 ```bash
@@ -494,13 +494,13 @@ cmake --find-package -DNAME=CUDA -DCOMPILER_ID=GNU -DLANGUAGE=C -DMODE=EXIST
 If CUDA is found, re-run your build:
 
 ```bash
-cd ~/gr_platform2/colcon_ws
+cd ~/Orca_Robot/colcon_ws
 colcon build --symlink-install
 ```
 
 ---
 
-### **3. Add CUDA to CMake Arguments**
+3. Add CUDA to CMake Arguments**
 If the issue persists, modify your **CMake command** to specify CUDA explicitly:
 
 ```bash
@@ -515,7 +515,7 @@ set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda" CACHE PATH "CUDA Toolkit path")
 
 ---
 
-### **4. Check CUDA Version Compatibility**
+4. Check CUDA Version Compatibility**
 Isaac ROS may require a **specific CUDA version**. Run:
 
 ```bash
@@ -537,7 +537,7 @@ sudo reboot
 
 ---
 
-### **5. If Using Docker**
+5. If Using Docker
 If you're using **Isaac ROS inside a Docker container**, ensure CUDA is available by running:
 
 ```bash
@@ -547,23 +547,15 @@ docker run --gpus all --rm nvcr.io/nvidia/cuda:12.6-base nvidia-smi
 If CUDA is not available, start your container with GPU access:
 
 ```bash
-docker run --gpus all -it --rm nvcr.io/nvidia/isaac_ros/ros2:humble bash
+docker run --gpus all -it --rm nvcr.io/nvidia/isaac_ros/ros2:${ROS_DISTRO} bash
 ```
 
 ---
 
-## **Final Steps**
-1. **Verify CUDA installation (`nvcc --version`).**
-2. **Set `CUDA_TOOLKIT_ROOT_DIR` manually (`export CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda`).**
-3. **Try building again (`colcon build --cmake-args -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda`).**
-4. **Ensure you're using a compatible CUDA version (`dpkg -l | grep cuda`).**
-5. **If using Docker, add `--gpus all` when running the container.**
-
-Let me know if you need more debugging! 🚀
 
 
 
-### CUDA installation (optional)
+6. Pytorch with CUDA (optional)
 
 ```bash
 source install/setup.bash 
@@ -579,4 +571,4 @@ python3 ~/Orca_Robot/docs/cuda_test.py
 
 ---
 
-Go back to the [README](README.md).
+Go back to the [README](../README.md).

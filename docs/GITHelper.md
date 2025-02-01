@@ -83,15 +83,4 @@ git submodule add https://github.com/ros-drivers/velodyne localization/velodyne
 
 ---
 
-## 6. Where to Go Next
-
-- For **hardware configuration** (CAN, I2C, etc.), see [HardwareHelper.md](HardwareHelper.md).
-- To **install and build** packages in a standard (non-Docker) environment, check:
-  - [INSTALL_DESKTOP.md](INSTALL_DESKTOP.md) for local development
-  - [INSTALL_ROBOT.md](INSTALL_ROBOT.md) for headless robot setup
-- For **managing containers** or containerizing your submodule workflows, see [DockerHelper.md](DockerHelper.md).
-- Refer to the [MANUAL.md](MANUAL.md) for operational details, such as running simulation, navigation, or advanced tasks.
-
----
-
-Go back to the [README](README.md).
+Go back to the [README](../README.md).

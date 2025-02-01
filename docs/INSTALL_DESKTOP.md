@@ -27,19 +27,19 @@ Ensure you have already installed:
 sudo apt-get update
 sudo apt-get install curl git python3-colcon-common-extensions
 ```
-and have **ROS2 Humble** installed and sourced in your shell:
+and have **ROS2 ${ROS_DISTRO}** installed and sourced in your shell:
 ```bash
-source /opt/ros/humble/setup.bash
+source /opt/ros/${ROS_DISTRO}/setup.bash
 ```
 
 ---
 
 ## 2. Clone the Repository
 
-1. Navigate to a workspace folder (e.g., `~/gr_platform2/colcon_ws/src`).
+1. Navigate to a workspace folder (e.g., `~/Orca_Robot/colcon_ws/src`).
 2. Clone the repository (submodules included):
    ```bash
-   cd ~/gr_platform2/colcon_ws/src
+   cd ~/Orca_Robot/colcon_ws/src
    git clone https://github.com/Curiosity-AI-team/OrcaRL2.git --recursive
    ```
 
@@ -54,33 +54,33 @@ Install the necessary ROS2 packages:
 ```bash
 sudo apt-get update
 sudo apt-get install gparted \
-  ros-humble-gazebo-ros-pkgs \
-  ros-humble-gazebo-ros2-control \
-  ros-humble-turtle-tf2-py \
-  ros-humble-tf2-tools \
-  ros-humble-tf-transformations \
-  ros-humble-navigation2 \
-  ros-humble-ros-testing \
-  ros-humble-nav2-bringup \
-  ros-humble-realsense2-camera \
-  ros-humble-imu-filter-madgwick \
-  ros-humble-libpointmatcher \
-  ros-humble-gtsam \
-  ros-humble-rmw-cyclonedds-cpp \
-  ros-humble-ros2-control \
-  ros-humble-ros2-controllers \
-  ros-humble-gazebo-ros2-control -y
-
-sudo apt-get install ros-humble-vision* -y
-sudo apt-get install ros-humble-octomap-* -y
-sudo apt-get install ros-humble-turtlebot3* -y
-sudo apt-get install -y ros-humble-rmf*
-sudo apt-get install -y ros-humble-tf2*
+  ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+  ros-${ROS_DISTRO}-gazebo-ros2-control \
+  ros-${ROS_DISTRO}-turtle-tf2-py \
+  ros-${ROS_DISTRO}-tf2-tools \
+  ros-${ROS_DISTRO}-tf-transformations \
+  ros-${ROS_DISTRO}-navigation2 \
+  ros-${ROS_DISTRO}-ros-testing \
+  ros-${ROS_DISTRO}-nav2-bringup \
+  ros-${ROS_DISTRO}-realsense2-camera \
+  ros-${ROS_DISTRO}-imu-filter-madgwick \
+  ros-${ROS_DISTRO}-libpointmatcher \
+  ros-${ROS_DISTRO}-gtsam \
+  ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+  ros-${ROS_DISTRO}-ros2-control \
+  ros-${ROS_DISTRO}-ros2-controllers \
+  ros-${ROS_DISTRO}-gazebo-ros2-control -y
+sudo apt install ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
+sudo apt-get install ros-${ROS_DISTRO}-vision* -y
+sudo apt-get install ros-${ROS_DISTRO}-octomap-* -y
+sudo apt-get install ros-${ROS_DISTRO}-turtlebot3* -y
+sudo apt-get install -y ros-${ROS_DISTRO}-rmf*
+sudo apt-get install -y ros-${ROS_DISTRO}-tf2*
 ```
 
 Then install any pending dependencies in the workspace:
 ```bash
-cd ~/gr_platform2/colcon_ws
+cd ~/Orca_Robot/colcon_ws
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 ```
@@ -91,7 +91,7 @@ rosdep install --from-paths src --ignore-src -r -y
 
 From the workspace root:
 ```bash
-cd ~/gr_platform2/colcon_ws
+cd ~/Orca_Robot/colcon_ws
 export MAKEFLAGS="-j2"  # Adjust for your CPU core count
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
@@ -154,4 +154,4 @@ export CYCLONEDDS_URI=file:///path/to/cyclonedds.xml
 
 ---
 
-Go back to the [README](README.md).
+Go back to the [README](../README.md).

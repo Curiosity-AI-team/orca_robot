@@ -60,21 +60,9 @@ This guide provides instructions for installing and configuring the GR Platform 
 
 2. **Install ROS2**:
    ```bash
-   sudo apt update
-   sudo apt install -y ros-humble-desktop
-   ```
-
-3. **Source ROS2**:
-   ```bash
-   echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
-   source ~/.bashrc
-   ```
-
-4. **ROS2 Dependencies**:
-   ```bash
-   sudo apt install -y python3-rosdep python3-colcon-common-extensions
-   sudo rosdep init
-   rosdep update
+   cd ~/Orca_Robot/ros2_setup_scripts_ubuntu
+   ./ros2-humble-desktop-main.sh
+   source /opt/ros/humble/setup.bash
    ```
 
 ---
@@ -83,14 +71,14 @@ This guide provides instructions for installing and configuring the GR Platform 
 
 1. **Clone repository**:
    ```bash
-   mkdir -p ~/gr_platform2/colcon_ws/src
-   cd ~/gr_platform2/colcon_ws/src
+   mkdir -p ~/Orca_Robot/colcon_ws/src
+   cd ~/Orca_Robot/colcon_ws/src
    git clone https://github.com/Curiosity-AI-team/OrcaRL2.git --recursive
    ```
 
 2. **Install Dependencies**:
    ```bash
-   cd ~/gr_platform2/colcon_ws
+   cd ~/Orca_Robot/colcon_ws
    rosdep install --from-paths src --ignore-src -r -y
    ```
 
@@ -102,7 +90,7 @@ This guide provides instructions for installing and configuring the GR Platform 
 
 4. **Add Workspace to Bashrc**:
    ```bash
-   echo "source ~/gr_platform2/colcon_ws/install/setup.bash" >> ~/.bashrc
+   echo "source ~/Orca_Robot/colcon_ws/install/setup.bash" >> ~/.bashrc
    source ~/.bashrc
    ```
 
@@ -114,7 +102,7 @@ To run your robot software automatically at startup, create a **systemd service*
 
 1. **Create Service File**:
    ```bash
-   sudo nano /etc/systemd/system/gr_platform.service
+   sudo nano /etc/systemd/system/orca-control.service
    ```
 2. **Add Service Configuration**:
    ```ini
@@ -125,7 +113,7 @@ To run your robot software automatically at startup, create a **systemd service*
    [Service]
    Type=simple
    User=robotuser
-   ExecStart=/bin/bash -c 'source /opt/ros/humble/setup.bash && source ~/gr_platform2/colcon_ws/install/setup.bash && ros2 launch operation desktop_operation.launch.py'
+   ExecStart=/bin/bash -c 'source /opt/ros/humble/setup.bash && source ~/Orca_Robot/colcon_ws/install/setup.bash && ros2 launch operation desktop_operation.launch.py'
    Restart=on-failure
 
    [Install]
@@ -136,13 +124,13 @@ To run your robot software automatically at startup, create a **systemd service*
 3. **Enable and Start**:
    ```bash
    sudo systemctl daemon-reload
-   sudo systemctl enable gr_platform.service
-   sudo systemctl start gr_platform.service
+   sudo systemctl enable orca-control.service
+   sudo systemctl start orca-control.service
    ```
 
 4. **Check Service Status**:
    ```bash
-   sudo systemctl status gr_platform.service
+   sudo systemctl status orca-control.service
    ```
 
 ---
@@ -167,7 +155,7 @@ ssh robotuser@<robot-ip>
 
 - **View service logs**:
   ```bash
-  sudo journalctl -u gr_platform.service -f
+  sudo journalctl -u orca-control.service -f
   ```
 - **Check active ROS2 nodes**:
   ```bash
@@ -175,11 +163,11 @@ ssh robotuser@<robot-ip>
   ```
 - **Rebuild workspace** (if you made changes):
   ```bash
-  cd ~/gr_platform2/colcon_ws
+  cd ~/Orca_Robot/colcon_ws
   colcon build --symlink-install
-  sudo systemctl restart gr_platform.service
+  sudo systemctl restart orca-control.service
   ```
 
 ---
 
-Go back to the [README](README.md).
+Go back to the [README](../README.md).

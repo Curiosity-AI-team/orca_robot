@@ -158,4 +158,4 @@ killall -9 gzclient
 
 ---
 
-Go back to the [README](README.md).
+Go back to the [README](../README.md).
