@@ -26,6 +26,8 @@ This document explains how to manage Git submodules within the **GR Platform** r
 When you clone a repository that contains submodules, pass the `--recursive` flag to fetch submodule contents:
 
 ```bash
+git config --global user.name "FIRST_NAME LAST_NAME"
+git config --global user.email "MY_NAME@example.com"
 git clone --recursive <repository-url>
 ```
 
@@ -80,6 +82,104 @@ git submodule add https://github.com/ros-drivers/velodyne localization/velodyne
 ```
 
 *(Adjust the paths if needed to align with your workspace.)*
+
+
+You can generate an SSH key on your system using the following steps:
+
+---
+
+## **1. Generate a New SSH Key**
+Open a terminal and run:
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+- Replace `"your_email@example.com"` with your actual GitHub email.
+- When prompted to enter a file to save the key, press **Enter** to use the default path (`~/.ssh/id_rsa`).
+- When prompted for a passphrase, you can leave it empty (or set one for extra security).
+
+---
+
+## **2. Add Your SSH Key to the SSH Agent**
+Start the SSH agent:
+
+```bash
+eval "$(ssh-agent -s)"
+```
+
+Then add your SSH private key to the agent:
+
+```bash
+ssh-add ~/.ssh/id_rsa
+```
+
+---
+
+## **3. Copy Your SSH Public Key**
+Run:
+
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+
+Copy the output (your SSH public key), which looks something like:
+
+```
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA7...
+```
+
+---
+
+## **4. Add the SSH Key to GitHub**
+1. Go to **GitHub → Settings**:  
+   [🔗 GitHub SSH Keys](https://github.com/settings/keys)
+   
+2. Click **New SSH Key**.
+
+3. **Title:** Name your key (e.g., "My Work PC").
+
+4. **Key Type:** Choose **Authentication Key**.
+
+5. **Paste the SSH Public Key** (from step 3).
+
+6. Click **Add SSH Key**.
+
+---
+
+## **5. Test the SSH Connection**
+Run:
+
+```bash
+ssh -T git@github.com
+```
+
+If successful, you should see:
+
+```
+Hi <your_github_username>! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+---
+
+## **6. Change Your Git Remote to SSH**
+If your Git repository is using HTTPS, update it to SSH:
+
+```bash
+git remote set-url origin git@github.com:Curiosity-AI-team/OrcaRL2.git
+```
+
+Now, try fetching:
+
+```bash
+git fetch
+```
+
+If you set up SSH correctly, authentication should work without asking for a username or password.
+
+---
+
+Let me know if you need further assistance! 🚀
 
 ---
 
