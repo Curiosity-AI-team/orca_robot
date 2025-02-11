@@ -13,3 +13,6 @@
 [submodule "OrcaHACS"]
 	path = OrcaHACS
 	url = https://github.com/Curiosity-AI-team/OrcaHACS
+[submodule "colcon_ws/src/rmf_demos"]
+	path = colcon_ws/src/rmf_demos
+	url = https://github.com/open-rmf/rmf_demos.git

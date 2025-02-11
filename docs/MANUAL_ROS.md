@@ -90,7 +90,7 @@ ros2 launch orca_free_fleet_client client.launch.xml
    ```
 3. **Generate Fleet Data** (if using fleet mgmt):
    ```bash
-   python3 /home/rover2/Orca_Robot/docs/pgm2png.py
+   python3 ~/Orca_Robot/docs/pgm2png.py
    traffic-editor
    colcon build
    ```
