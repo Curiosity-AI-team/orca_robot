@@ -179,6 +179,62 @@ If you set up SSH correctly, authentication should work without asking for a use
 
 ---
 
+If Visual Studio (VS) still shows changes in the submodule `colcon_ws/src/rmf_demos`, it means Git is tracking the submodule commit and detecting differences. The `-dirty` status indicates that some files inside the submodule were modified.
+
+### **Steps to Fully Ignore Submodule Changes**
+#### **1. Ignore Submodule Changes Globally**
+Run the following command in your repository:
+```bash
+git config submodule.colcon_ws/src/rmf_demos.ignore all
+```
+This tells Git to **completely ignore** changes inside the submodule.
+
+If you want to apply this setting globally for all repositories:
+```bash
+git config --global submodule.recurse false
+```
+
+#### **2. Mark Submodule as Unchanged**
+If VS still shows changes, tell Git to ignore modifications:
+```bash
+git update-index --assume-unchanged colcon_ws/src/rmf_demos
+```
+If you ever need to reset this:
+```bash
+git update-index --no-assume-unchanged colcon_ws/src/rmf_demos
+```
+
+#### **3. Ensure No Local Changes in the Submodule**
+Navigate to the submodule directory and check for modifications:
+```bash
+cd colcon_ws/src/rmf_demos
+git status
+```
+If you see any modified files, you can reset them:
+```bash
+git reset --hard HEAD
+git clean -fd
+```
+Then, go back to your main repository:
+```bash
+cd ../../../
+```
+
+#### **4. Remove Submodule from `git status` Output**
+To fully remove the submodule from showing in `git status`, run:
+```bash
+git diff --cached colcon_ws/src/rmf_demos
+```
+If you see an unwanted change, reset it:
+```bash
+git reset HEAD colcon_ws/src/rmf_demos
+```
+
+#### **5. Verify in VS**
+Restart Visual Studio, then check if it still detects changes.
+
+---
+
 Let me know if you need further assistance! 🚀
 
 ---
