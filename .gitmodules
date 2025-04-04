@@ -4,9 +4,9 @@
 [submodule "ros2_setup_scripts_ubuntu"]
 	path = ros2_setup_scripts_ubuntu
 	url = https://github.com/Tiryoh/ros2_setup_scripts_ubuntu.git
-[submodule "colcon_ws/src/OrcaRL2"]
-	path = colcon_ws/src/OrcaRL2
-	url = https://github.com/Curiosity-AI-team/OrcaRL2.git
+[submodule "colcon_ws/src/OrcaROS"]
+	path = colcon_ws/src/OrcaROS
+	url = https://github.com/Curiosity-AI-team/OrcaROS.git
 [submodule "OrcaVA"]
 	path = OrcaVA
 	url = https://github.com/Curiosity-AI-team/OrcaVA

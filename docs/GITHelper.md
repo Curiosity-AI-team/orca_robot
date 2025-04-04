@@ -40,7 +40,7 @@ If you forget the `--recursive` option, you can always initialize and update sub
 To ensure all submodules are present and up to date:
 
 ```bash
-cd ~/Orca_Robot/colcon_ws/src/OrcaRL2
+cd ~/Orca_Robot/colcon_ws/src/OrcaROS
 git submodule update --init --recursive
 ```
 
@@ -78,7 +78,7 @@ Similarly, you might add `rmf_demos` or `velodyne` packages:
 
 ```bash
 git submodule add https://github.com/open-rmf/rmf_demos.git simulation/rmf_demos
-git submodule add https://github.com/ros-drivers/velodyne localization/velodyne
+git submodule add https://github.com/Curiosity-AI-team/OrcaROS.git colcon_ws/velodyne
 ```
 
 *(Adjust the paths if needed to align with your workspace.)*
@@ -166,7 +166,7 @@ Hi <your_github_username>! You've successfully authenticated, but GitHub does no
 If your Git repository is using HTTPS, update it to SSH:
 
 ```bash
-git remote set-url origin git@github.com:Curiosity-AI-team/OrcaRL2.git
+git remote set-url origin git@github.com:Curiosity-AI-team/OrcaROS.git
 ```
 
 Now, try fetching:

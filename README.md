@@ -2,7 +2,7 @@
 
 Welcome to the **Orca Robot Project**! This repository brings together a complete and versatile robotics platform featuring multiple sub-packages designed to handle robotic reinforcement learning, multimodal interaction, and smart home integration. Below is a top-level guide to get you started, along with links to additional documentation.
 
-![OrcaRL Interface](docs/images/maxresdefault.jpg)
+![OrcaROS Interface](docs/images/maxresdefault.jpg)
 
 ---
 
@@ -14,7 +14,7 @@ A typical folder structure might look like this:
 orca_robot/
 ├── colcon_ws/
 │   └── src/
-│       └── OrcaRL2/                # OrcaRL package for ROS2
+│       └── OrcaROS/                # OrcaROS package for ROS2
 ├── OrcaVA/                         # Multimodal assistant package
 ├── OrcaHACS/                       # Integrations for Home Assistant
 ├── docs/                           # Documentation and images
@@ -50,7 +50,7 @@ Depending on your needs, consult the following files in the `docs/` folder (or a
 
 ## 📚 Installation and Workspace Setup
 
-Below is a brief overview of how to set up the **Orca Robot Project**. **Please note** that each subsystem (like `OrcaVA`, `OrcaHACS`, or `OrcaRL2`) may have additional dependencies described in their respective README files.
+Below is a brief overview of how to set up the **Orca Robot Project**. **Please note** that each subsystem (like `OrcaVA`, `OrcaHACS`, or `OrcaROS`) may have additional dependencies described in their respective README files.
 
 1. **Clone the Repository (with Submodules):**
 
@@ -75,14 +75,14 @@ Below is a brief overview of how to set up the **Orca Robot Project**. **Please 
 
 ---
 
-## 🚀 Running OrcaRL
+## 🚀 Running OrcaROS
 
-OrcaRL provides tools and environments for integrating ROS on robots using reinforcement learning. Once your workspace is built:
+OrcaROS provides tools and environments for integrating ROS on robots using reinforcement learning. Once your workspace is built:
 
-1. **Navigate to OrcaRL2**:
+1. **Navigate to OrcaROS**:
 
    ```bash
-   cd ~/orca_robot/colcon_ws/src/OrcaRL2
+   cd ~/orca_robot/colcon_ws/src/OrcaROS
    ```
 
 2. **Source the Environment**:
@@ -141,8 +141,8 @@ Refer to **[HardwareHelper.md](docs/HardwareHelper.md)** for step-by-step instru
 
 ## 🎯 Subpackage Details
 
-1. **OrcaRL2** (ROS2 & Reinforcement Learning)  
-   Located at `colcon_ws/src/OrcaRL2`. Main functionalities include SLAM, navigation, and RL-based planning.  
+1. **OrcaROS** (ROS2 & Reinforcement Learning)  
+   Located at `colcon_ws/src/OrcaROS`. Main functionalities include SLAM, navigation, and RL-based planning.  
 
 2. **OrcaVA** (Multimodal Assistant)  
    Provides modules for voice and text-based interaction.  
